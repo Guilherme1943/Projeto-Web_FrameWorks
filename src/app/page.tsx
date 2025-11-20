@@ -1,5 +1,5 @@
 export default function Home(){
     return(
-        <h1>conectaedu</h1>
+        <h1>conectaeduw</h1>
     )
 }
