@@ -1,18 +1,5 @@
+document.getElementById("loginForm").addEventListener("submit", function(e){
+    e.preventDefault();
 
-import "./globals.css";
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body
-        className={`antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
-}
+    alert("Login enviado (simulação)");
+});
