@@ -1,5 +1,4 @@
-export default function Home(){
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -52,4 +51,3 @@ export default function Home(){
 
 </body>
 </html>
-}
