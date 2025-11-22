@@ -1,26 +1,141 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 85%;
+    max-width: 1100px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* BOX DE LOGIN */
+.login-box {
+    width: 60%;
+    height: 70%;
+    margin: 10px;
+    padding: 100px;
+}
+
+.login-box h1 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.subtitle {
+    margin: 5px 0 25px;
+    color: #555;
+}
+
+/* CAMPOS */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #eef0ff;
+    outline: none;
+    font-size: 15px;
+}
+
+/* BOTÃO LOGIN */
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: linear-gradient(90deg, #002a6c, #1569d9);
+    color: white;
+    border-radius: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.btn-login:hover {
+    opacity: .85;
+}
+
+/* DIVISOR */
+.divider {
+    text-align: center;
+    margin: 25px 0 15px;
+    color: #777;
+    font-weight: 500;
+}
+
+/* BOTÕES SOCIAIS */
+.btn-social {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.btn-social img {
+    width: 22px;
+}
+
+.google:hover {
+    background: #f2f2f2;
+}
+
+.facebook:hover {
+    background: #e7f0ff;
+}
+
+/* LOGO */
+.logo-box {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: scale(3.0);
+}
+
+.logo-box img {
+    width: 240px;
+}
+
+.logo-box h2 {
+    margin-top: 15px;
+    font-size: 26px;
+    color: #1e3d8f;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .login-box, .logo-box {
+        width: 90%;
+    }
 }
