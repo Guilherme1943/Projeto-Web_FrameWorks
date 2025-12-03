@@ -7,29 +7,29 @@ import { Loader2 } from "lucide-react"
 export default function GoogleLoginPage() {
   const router = useRouter()
   
-  // Estado pra controlar aquele loadingzinho chato de quando clica na conta
+  // estado de carregamento
   const [loadingAccount, setLoadingAccount] = useState<string | null>(null)
 
-  // Função que finge que tá autenticando
+  // autenticação
   const handleAccountClick = async (accountName: string) => {
     setLoadingAccount(accountName)
     
-    // Espera um pouco pra dar aquele drama de "conectando..."
+    // "conectando..."
     await new Promise(resolve => setTimeout(resolve, 1500))
     
-    // Deu bom, manda pro painel
+    // rota
     router.push("/inicio")
   }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#f0f2f5] p-4 text-[#202124] font-sans">
       
-      {/* O Card Principal do Google - Borda fininha e cantos arredondados */}
+      {/* card google*/}
       <div className="w-full max-w-[448px] bg-white rounded-lg border border-[#dadce0] p-0 overflow-hidden shadow-sm">
         
-        {/* Cabeçalho do Card */}
+        {/* cabeçalho */}
         <div className="border-b border-[#dadce0] px-10 py-3 flex items-center gap-3">
-            {/* Logozinho do G colorido (feito com SVG na mão pra ficar leve) */}
+
             <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
               <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
                 <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z" />
@@ -41,11 +41,10 @@ export default function GoogleLoginPage() {
             <span className="text-sm font-medium text-gray-600">Fazer login com google</span>
         </div>
 
-        {/* Miolo do card */}
         <div className="px-10 py-10">
           
           <div className="flex flex-col items-center text-center">
-             {/* Aquele emoji maroto da imagem */}
+             {/* emote*/}
              <div className="mb-4">
                 <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/512.gif" alt="Hand" width="40" height="40" />
              </div>
@@ -56,10 +55,10 @@ export default function GoogleLoginPage() {
              </p>
           </div>
 
-          {/* Lista de Contas - Hardcoded pra ficar igual a imagem */}
+          {/* contas*/}
           <ul className="space-y-1 mb-8">
             
-            {/* Conta 1: Lucas */}
+            {/* conta 1: lucas */}
             <li 
                onClick={() => handleAccountClick("lucas")}
                className="flex items-center gap-4 p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors rounded-t-md"
@@ -75,7 +74,7 @@ export default function GoogleLoginPage() {
                </div>
             </li>
 
-            {/* Conta 2: Adson */}
+            {/* conta 2: adson */}
             <li 
                onClick={() => handleAccountClick("adson")}
                className="flex items-center gap-4 p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
@@ -91,7 +90,7 @@ export default function GoogleLoginPage() {
                </div>
             </li>
 
-            {/* Opção: Usar outra conta */}
+            {/* opção: usar outra conta */}
             <li className="flex items-center gap-4 p-3 hover:bg-gray-50 cursor-pointer transition-colors rounded-b-md">
                <div className="h-8 w-8 rounded-full text-[#5f6368] flex items-center justify-center shrink-0">
                  <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor">
@@ -103,7 +102,7 @@ export default function GoogleLoginPage() {
 
           </ul>
 
-          {/* Texto legal lá embaixo */}
+          {/* texto adicional */}
           <div className="text-[11px] text-[#5f6368] leading-relaxed">
              To continue, Google will share your name, email address, language preference, and profile picture with Company. Before using this app, you can review Company's <a href="#" className="text-[#1a73e8] hover:underline font-medium">privacy policy</a> and <a href="#" className="text-[#1a73e8] hover:underline font-medium">terms of service</a>.
           </div>
@@ -111,7 +110,7 @@ export default function GoogleLoginPage() {
         </div>
       </div>
 
-      {/* Footer da Página (fora do card) */}
+      {/* footer*/}
       <div className="mt-6 flex justify-between w-full max-w-[448px] text-xs text-[#5f6368]">
           <div className="cursor-pointer hover:bg-gray-200 px-2 py-1 rounded">Português (Brasil) ▼</div>
           <div className="flex gap-4">
