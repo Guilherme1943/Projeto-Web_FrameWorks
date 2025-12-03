@@ -20,42 +20,49 @@ export function LoginForm({
   ...props
 }: React.ComponentProps<"div">) {
   
-  // Ferramenta para trocar de página
   const router = useRouter()
 
-  // Guardam o email, senha e se está carregando
+  // Estados do formulário
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  // Função disparada ao clicar em "Entrar"
+  // --- ÁREA DE REDIRECIONAMENTOS ---
+  const handleGoogleLogin = () => {
+    router.push("/google-login")
+  }
+
+  const handleFacebookLogin = () => {
+    // router.push("/facebook-login") 
+    toast.info("Em breve", { description: "Tela de login do Facebook será implementada." })
+  }
+
+  const handleGithubLogin = () => {
+    // router.push("/github-login") 
+    toast.info("Em breve", { description: "Tela de login do GitHub será implementada." })
+  }
+  // --- FIM ---
+
   async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault() // Segura a página para não recarregar
-    setIsLoading(true)     // Ativa o loading no botão
+    event.preventDefault()
+    setIsLoading(true)
 
     try {
-      // Simula uma espera de 2s como se fosse o servidor
       await new Promise((resolve) => setTimeout(resolve, 2000))
 
-      // Avisa que deu tudo certo
       toast.success("Login realizado!", {
         description: "Bem-vindo de volta ao ConectaEdu."
       })
 
       console.log("Login feito com:", { email, password })
-
-      // Leva o usuário para a tela inicial
       router.push("/inicio") 
 
     } catch (error) {
       console.error("Deu erro:", error)
-      
-      // Avisa que deu erro visualmente
       toast.error("Erro ao entrar", {
         description: "Verifique seu e-mail e senha e tente novamente."
       })
-      
-      setIsLoading(false) // Para o loading se falhar
+      setIsLoading(false)
     }
   }
 
@@ -82,7 +89,6 @@ export function LoginForm({
                   type="email"
                   placeholder="m@exemplo.com"
                   required
-                  // Liga o input à variável email
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -91,10 +97,7 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Senha</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
-                  >
+                  <a href="#" className="ml-auto text-sm underline-offset-2 hover:underline">
                     Esqueceu a senha?
                   </a>
                 </div>
@@ -102,7 +105,6 @@ export function LoginForm({
                   id="password" 
                   type="password" 
                   required
-                  // Liga o input à variável password
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -112,7 +114,7 @@ export function LoginForm({
                 <Button 
                   type="submit" 
                   className="w-full bg-linear-to-r from-blue-900 to-sky-500 hover:from-blue-800 hover:to-sky-400 text-white transition-all duration-300"
-                  disabled={isLoading} // Bloqueia clique duplo
+                  disabled={isLoading}
                 >
                   {isLoading ? "Entrando..." : "Entrar"}
                 </Button>
@@ -122,17 +124,11 @@ export function LoginForm({
                 Continue com
               </FieldSeparator>
               
+              {/* BOTÕES SOCIAIS */}
               <Field className="grid grid-cols-3 gap-4">
-                <Button variant="outline" type="button">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                      d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  <span className="sr-only">Entrar com Apple</span>
-                </Button>
-                <Button variant="outline" type="button">
+                
+                {/* 1. Google */}
+                <Button variant="outline" type="button" onClick={handleGoogleLogin}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
                       d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
@@ -141,15 +137,23 @@ export function LoginForm({
                   </svg>
                   <span className="sr-only">Entrar com Google</span>
                 </Button>
-                <Button variant="outline" type="button">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                      d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z"
-                      fill="currentColor"
-                    />
+
+                {/* 2. Facebook (NOVA LOGO) */}
+                <Button variant="outline" type="button" onClick={handleFacebookLogin}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" preserveAspectRatio="xMidYMid" viewBox="0 0 256 256">
+                    <path d="M256 128C256 57.308 198.692 0 128 0C57.308 0 0 57.308 0 128c0 63.888 46.808 116.843 108 126.445V165.56h-32.5v-37.561h32.5v-28.209c0-32.056 19.048-49.525 48.079-49.525 13.914 0 28.399 2.485 28.399 2.485v31.185h-15.998c-15.892 0-20.85 9.864-20.85 19.98v24.084h35.122l-5.614 37.561h-29.508V254.445C209.192 244.843 256 191.888 256 128z" fill="#1877F2"/>
                   </svg>
-                  <span className="sr-only">Entrar com Meta</span>
+                  <span className="sr-only">Entrar com Facebook</span>
                 </Button>
+
+                {/* 3. GitHub */}
+                <Button variant="outline" type="button" onClick={handleGithubLogin}>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                  <span className="sr-only">Entrar com GitHub</span>
+                </Button>
+
               </Field>
               <FieldDescription className="text-center">
                 Não possui uma conta? <a href="/signup">Registrar</a>
