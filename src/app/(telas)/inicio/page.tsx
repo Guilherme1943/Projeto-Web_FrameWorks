@@ -1,126 +1,167 @@
-"use client"; // Necessário para usar hooks como useState
+"use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { CardPrincipal } from "@/components/widgets-inicio/card-principal";
+import { WidgetAgenda } from "@/components/widgets-inicio/agenda";
+import { WidgetNotificacoes } from "@/components/widgets-inicio/notificacoes";
 import { 
-  ArrowRight, 
-  Beaker, 
-  Code2, 
-  LayoutDashboard, 
-  Settings, 
-  Terminal 
-} from "lucide-react";
+  GraficoProgresso, 
+  GraficoAtividadeSemanal
+} from "@/components/widgets-inicio/desempenho";
+import { WidgetFaq } from "@/components/widgets-inicio/faq-retratil";
+import { AulaAtual, EventoAgenda, NotificacaoItem, DadosDesempenho } from "@/types/inicio";
+import { getProgressoGeral } from "@/lib/progresso";
 
-export default function Home() {
-  const [count, setCount] = useState(0);
+
+
+// card de aula tela principal
+const dadosAula: AulaAtual = {
+  materia: "Matemática",
+  titulo: "Introdução às Funções",
+  modulo: "Módulo 1 • Aula 01",
+  progresso: 0,
+  tempoRestante: "15:30 restantes",
+  aulaId: "matematica-01",
+  imagem: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=2070&auto=format&fit=crop"
+};
+
+// card de notificações
+const dadosNotificacoes: NotificacaoItem[] = [
+  { 
+    id: 1, 
+    titulo: "Nova Aula", 
+    mensagem: "O módulo de Geometria Espacial foi liberado.", 
+    tempo: "Há 1h", 
+    tipo: "aula" 
+  },
+  { 
+    id: 2, 
+    titulo: "Aviso", 
+    mensagem: "Manutenção programada na plataforma às 00h.", 
+    tempo: "Há 5h", 
+    tipo: "sistema" 
+  }
+];
+
+export default function DashboardHome() {
+  const [nomeUsuario, setNomeUsuario] = useState("Estudante");
+  const [agendaDinamica, setAgendaDinamica] = useState<EventoAgenda[]>([]);
+  const [performance, setPerformance] = useState<DadosDesempenho>({
+    progressoGeral: 0,
+    aulasConcluidas: 0,
+    totalAulas: 0,
+    mediaGeral: 0.0,
+    atividadeSemanal: [0, 0, 0, 0, 0, 0, 0]
+  });
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // atualiza o nome de usuario ao trocar em /configuracoes
+    const dadosConfig = localStorage.getItem("conectaedu-config");
+    if (dadosConfig) {
+      try {
+        const config = JSON.parse(dadosConfig);
+        const primeiroNome = config.nome ? config.nome.split(" ")[0] : "Estudante";
+        setNomeUsuario(primeiroNome);
+      } catch (e) { console.error("Erro config:", e); }
+    }
+
+    // carregar agenda do calendário 
+    const dadosCalendario = localStorage.getItem("conectaedu-calendario");
+    if (dadosCalendario) {
+      try {
+        const eventosRaw = JSON.parse(dadosCalendario);
+        
+        // filtra apenas eventos futuros ou de hoje
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        const proximosEventos = eventosRaw
+          .filter((evt: any) => {
+            const dataEvento = new Date(evt.data + "T00:00:00");
+            return dataEvento >= hoje;
+          })
+          .sort((a: any, b: any) => new Date(a.data).getTime() - new Date(b.data).getTime())
+          .slice(0, 3)
+          .map((evt: any) => {
+            const dataObj = new Date(evt.data + "T00:00:00");
+            const diaMes = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+            
+            return {
+              id: evt.id,
+              titulo: evt.titulo,
+              horario: `${diaMes} • ${evt.horaInicio}`,
+              tipo: evt.tipo
+            };
+          });
+
+        setAgendaDinamica(proximosEventos);
+      } catch (e) { console.error("Erro agenda:", e); }
+    }
+
+    // calcula o progresso real
+    const stats = getProgressoGeral();
+    setPerformance({
+      progressoGeral: stats.porcentagem,
+      aulasConcluidas: stats.concluidas,
+      totalAulas: stats.total,
+      mediaGeral: 0.0,
+      atividadeSemanal: stats.concluidas > 0 ? [20, 40, 10, 50, 30, 0, 0] : [0, 0, 0, 0, 0, 0, 0]
+    });
+
+    setIsLoaded(true);
+  }, []);
+
+  // Evita renderização sem hidratação (flicker)
+  if (!isLoaded) return <div className="min-h-full w-full bg-white" />;
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+    <div className="min-h-full w-full bg-white p-6 md:p-10 animate-in fade-in duration-700">
       
-      {/* --- HEADER --- */}
-      <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur px-6 py-4">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-xl text-blue-600">
-            <Beaker className="h-6 w-6" />
-            <span>DevLab</span>
-          </div>
-          <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-600">
-            <Link href="#" className="hover:text-blue-600 transition">Documentação</Link>
-            <Link href="#" className="hover:text-blue-600 transition">Componentes</Link>
-            <Link href="#" className="hover:text-blue-600 transition">API</Link>
-          </nav>
-          <div className="flex gap-4">
-            <button className="text-sm font-medium text-slate-600 hover:text-slate-900">
-              Login
-            </button>
-            <button className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 transition">
-              Começar
-            </button>
-          </div>
-        </div>
+      {/* 1. Cabeçalho de Boas-vindas */}
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold text-slate-900 tracking-tight">
+          Início
+        </h1>
+        <h2 className="text-xl text-slate-500 mt-2 font-medium">
+          Vamos continuar sua jornada, {nomeUsuario}?
+        </h2>
       </header>
 
-      {/* --- MAIN CONTENT --- */}
-      <main className="flex-1">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
         
-        {/* Hero Section */}
-        <section className="mx-auto max-w-6xl px-6 py-20 text-center lg:py-32">
-          <div className="mx-auto max-w-3xl space-y-6">
-            <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-600">
-              Ambiente de Desenvolvimento v1.0
-            </span>
-            <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl text-slate-900">
-              Ambiente de Testes para <br/>
-              <span className="text-blue-600">Next.js & Tailwind</span>
-            </h1>
-            <p className="text-lg text-slate-600">
-              Esta é uma página base para validar componentes, testar rotas e experimentar novos layouts. 
-              Edite <code>src/app/page.tsx</code> para começar.
-            </p>
-            
-            {/* Área Interativa (Teste de Client Component) */}
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 rounded-xl border bg-white p-6 shadow-sm sm:flex-row">
-              <p className="font-medium text-slate-700">Teste de Estado (Client-Side):</p>
-              <div className="flex items-center gap-4">
-                <button 
-                  onClick={() => setCount(count - 1)}
-                  className="h-8 w-8 rounded border hover:bg-slate-100 flex items-center justify-center"
-                >
-                  -
-                </button>
-                <span className="w-8 text-center font-mono text-xl">{count}</span>
-                <button 
-                  onClick={() => setCount(count + 1)}
-                  className="h-8 w-8 rounded bg-blue-600 text-white hover:bg-blue-700 flex items-center justify-center"
-                >
-                  +
-                </button>
-              </div>
-            </div>
+        <div className="lg:col-span-8 flex flex-col">
+          <CardPrincipal aula={dadosAula} />
+        </div>
+
+        {/*agenda e notificações - grid*/}
+        <div className="lg:col-span-4 flex flex-col gap-6">
+          <WidgetAgenda eventos={agendaDinamica} />
+          <WidgetNotificacoes notificacoes={dadosNotificacoes} />
+        </div>
+      </div>
+
+      {/* card de meu desempenho*/}
+      <div className="mb-10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-slate-900">Meu Desempenho</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+          <div className="h-full min-h-[250px]">
+             <GraficoProgresso dados={performance} />
           </div>
-        </section>
-
-        {/* Features Grid */}
-        <section className="bg-white py-20 border-t">
-          <div className="mx-auto max-w-6xl px-6">
-            <h2 className="mb-12 text-2xl font-bold text-slate-900">Ferramentas de Teste</h2>
-            
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {/* Card 1 */}
-              <div className="group rounded-lg border p-6 hover:border-blue-500 hover:shadow-md transition cursor-pointer">
-                <LayoutDashboard className="mb-4 h-8 w-8 text-blue-600" />
-                <h3 className="mb-2 text-lg font-semibold">Layouts</h3>
-                <p className="text-slate-600 text-sm">Teste a responsividade e grids do Tailwind CSS.</p>
-              </div>
-
-              {/* Card 2 */}
-              <div className="group rounded-lg border p-6 hover:border-blue-500 hover:shadow-md transition cursor-pointer">
-                <Code2 className="mb-4 h-8 w-8 text-purple-600" />
-                <h3 className="mb-2 text-lg font-semibold">Componentes</h3>
-                <p className="text-slate-600 text-sm">Área para renderizar e validar componentes isolados.</p>
-              </div>
-
-              {/* Card 3 */}
-              <div className="group rounded-lg border p-6 hover:border-blue-500 hover:shadow-md transition cursor-pointer">
-                <Terminal className="mb-4 h-8 w-8 text-green-600" />
-                <h3 className="mb-2 text-lg font-semibold">API Routes</h3>
-                <p className="text-slate-600 text-sm">Teste endpoints e chamadas de banco de dados.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-      {/* --- FOOTER --- */}
-      <footer className="border-t bg-slate-50 py-10">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
-          <p className="text-sm text-slate-500">© 2024 DevLab. Ambiente de Testes.</p>
-          <div className="flex gap-4">
-            <Settings className="h-5 w-5 text-slate-400 hover:text-slate-600 cursor-pointer" />
+          <div className="h-full min-h-[250px]">
+             <GraficoAtividadeSemanal dados={performance.atividadeSemanal} />
           </div>
         </div>
-      </footer>
+      </div>
+
+      {/* faq*/}
+      <div className="w-full pb-8">
+        <WidgetFaq />
+      </div>
+
     </div>
   );
 }

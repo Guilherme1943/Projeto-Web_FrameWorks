@@ -1,13 +1,11 @@
+// Arquivo: src/app/(telas)/layout.tsx
+import React from "react";
 import SidebarLayout from "@/components/barralateral/sidebar";
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function LayoutTelas({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR">
-      <body>
-        <SidebarLayout>
-          {children}
-        </SidebarLayout>
-      </body>
-    </html>
+    <SidebarLayout>
+      {children}
+    </SidebarLayout>
   );
 }
