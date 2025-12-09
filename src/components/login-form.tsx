@@ -81,7 +81,7 @@ export function LoginForm({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@exemplo.com"
+                  placeholder=""
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -118,7 +118,7 @@ export function LoginForm({
                 Continue com
               </FieldSeparator>
               
-              {/* botões redes sociais - AQUI FOI ALTERADO PARA 2 COLUNAS */}
+              {/* botões redes sociais */}
               <Field className="grid grid-cols-2 gap-4">
                 
                 {/* Google */}
@@ -134,8 +134,11 @@ export function LoginForm({
 
                 {/* Facebook*/}
                 <Button variant="outline" type="button" onClick={handleFacebookLogin}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" preserveAspectRatio="xMidYMid" viewBox="0 0 256 256" className="w-5 h-5 mr-2">
-                    <path d="M256 128C256 57.308 198.692 0 128 0C57.308 0 0 57.308 0 128c0 63.888 46.808 116.843 108 126.445V165.56h-32.5v-37.561h32.5v-28.209c0-32.056 19.048-49.525 48.079-49.525 13.914 0 28.399 2.485 28.399 2.485v31.185h-15.998c-15.892 0-20.85 9.864-20.85 19.98v24.084h35.122l-5.614 37.561h-29.508V254.445C209.192 244.843 256 191.888 256 128z" fill="#1877F2"/>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 mr-2">
+                    <path
+                      d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+                      fill="currentColor"
+                    />
                   </svg>
                   Facebook
                 </Button>
