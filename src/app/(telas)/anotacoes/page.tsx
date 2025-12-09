@@ -14,10 +14,10 @@ const EXEMPLO_INICIAL: Nota = {
   titulo: "Bem-vindo às Anotações",
   postIt: {
     titulo: "Dicas rápidas",
-    itens: ["Clique no + para criar", "Passe o mouse para editar", "Design minimalista"]
+    itens: ["Clique no + para criar", "Passe o mouse para editar"]
   },
   textoTitulo: "Organização Simples",
-  textoCorpo: "Este sistema utiliza o armazenamento local do seu navegador. Seus Anotaçãos permanecem salvos aqui, prontos para sua próxima sessão de estudos.",
+  textoCorpo: "Aqui suas anotações ficam salvas.",
   dataCriacao: Date.now()
 };
 
@@ -98,7 +98,7 @@ export default function PageAnotacoes() {
           ? { ...n, ...dadosNota } 
           : n
       ));
-      toast.success("Anotação atualizado!");
+      toast.success("Anotação atualizada!");
     } else {
       const novaNota: Nota = {
         id: crypto.randomUUID(),
@@ -106,7 +106,7 @@ export default function PageAnotacoes() {
         ...dadosNota
       };
       setNotas((prev) => [novaNota, ...prev]);
-      toast.success("Anotação criado com sucesso!");
+      toast.success("Anotação criada com sucesso!");
     }
   };
 

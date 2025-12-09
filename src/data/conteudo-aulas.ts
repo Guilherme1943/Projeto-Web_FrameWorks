@@ -101,16 +101,16 @@ export const BANCO_DE_AULAS: Record<string, VideoAula> = {
 
 // ingles id 05
   ...Object.fromEntries([
-    [1, "Verb To Be", "https://www.youtube.com/embed/ncIyAazIKE8"],
-    [2, "Present Simple", "https://www.youtube.com/embed/ncIyAazIKE8"],
-    [3, "Present Continuous", "https://www.youtube.com/embed/q35PWSrzKH0"],
-    [4, "Simple Past", "https://www.youtube.com/embed/VRqweGlV4IM"],
-    [5, "Past Continuous", "https://www.youtube.com/embed/VRqweGlV4IM"],
-    [6, "Future with Will/Going to", "https://www.youtube.com/embed/-v31oGtr5aM"],
-    [7, "Present Perfect", "https://www.youtube.com/embed/fl7OsfTD_Oc"], 
-    [8, "Modal Verbs", "https://www.youtube.com/embed/h5HHhm-n5LQ"],
-    [9, "Passive Voice", "https://www.youtube.com/embed/z-Q9RHcgCqs"], 
-    [10, "Conditional Sentences", "https://www.youtube.com/embed/COLOQUE_O_LINK_AQUI"]
+    [1, "Verb To Be", "link"],
+    [2, "Present Simple", "link"],
+    [3, "Present Continuous", "link"],
+    [4, "Simple Past", "link"],
+    [5, "Past Continuous", "link"],
+    [6, "Future with Will/Going to", "link"],
+    [7, "Present Perfect", "link"], 
+    [8, "Modal Verbs", "link"],
+    [9, "Passive Voice", "link"], 
+    [10, "Conditional Sentences", "link"]
   ].map(([num, titulo, url], i, arr) => {
     const aula = criarAula(5, "ingles", num as number, arr.length, titulo as string, url as string);
     return [aula.id, aula];
